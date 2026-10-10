@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#5b6cff" />
+  <meta
+    name="description"
+    content="Weatherly Pro — professional live weather dashboard."
+  />
+  <title>Weatherly Pro — Live Weather Dashboard</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app-shell">
+
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar" id="sidebar">
+
+      <div class="brand">
+        <div class="brand-mark">
+          <i class="fa-solid fa-cloud-sun"></i>
+        </div>
+
+        <div>
+          <div class="brand-name">Weatherly</div>
+          <div class="brand-caption">PRO DASHBOARD</div>
+        </div>
+      </div>
+
+      <div class="sidebar-label">Workspace</div>
+
+      <nav class="sidebar-nav" aria-label="Dashboard navigation">
+        <a
+          class="nav-item active"
+          href="#dashboard"
+          data-section="dashboard"
+        >
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a
+          class="nav-item"
+          href="#hourly"
+          data-section="hourly"
+        >
+          <i class="fa-solid fa-clock"></i>
+          <span>Hourly Forecast</span>
+        </a>
+
+        <a
+          class="nav-item"
+          href="#forecast"
+          data-section="forecast"
+        >
+          <i class="fa-solid fa-calendar-days"></i>
+          <span>7-Day Forecast</span>
+        </a>
+
+        <a
+          class="nav-item"
+          href="#airQuality"
+          data-section="airQuality"
+        >
+          <i class="fa-solid fa-leaf"></i>
+          <span>Air Quality</span>
+        </a>
+
+        <a
+          class="nav-item"
+          href="#apiExplorer"
+          data-section="apiExplorer"
+        >
+          <i class="fa-solid fa-code"></i>
+          <span>API Explorer</span>
+        </a>
+
+        <a
+          class="nav-item"
+          href="#recent"
+          data-section="recent"
+        >
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Recent Searches</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+
+      <div class="sidebar-promo">
+        <div class="promo-icon">
+          <i class="fa-solid fa-sparkles"></i>
+        </div>
+
+        <div class="promo-title">
+          Weather intelligence
+        </div>
+
+        <div class="promo-copy">
+          Live weather, forecasts and API insights in one workspace.
+        </div>
+
+        <button
+          type="button"
+          class="promo-button"
+          id="promoButton"
+        >
+          Explore Pro
+        </button>
+      </div>
+
+      <div class="service-status">
+        <span
+          class="status-dot"
+          id="sidebarStatusDot"
+        ></span>
+
+        <span id="sidebarStatusText">
+          Weather service ready
+        </span>
+      </div>
+
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main">
+
+      <!-- ================= TOPBAR ================= -->
+      <header class="topbar">
+
+        <div class="topbar-heading">
+          <div class="eyebrow">
+            Weather intelligence
+          </div>
+
+          <h1 class="page-title">
+            Good day, explorer
+            <span aria-hidden="true">👋</span>
+          </h1>
+
+          <p class="page-subtitle">
+            Live conditions, forecasts and API activity at a glance.
+          </p>
+        </div>
+
+        <div class="topbar-actions">
+
+          <div class="api-chip" id="apiChip">
+            <span class="status-dot"></span>
+            <span id="apiChipText">API Ready</span>
+          </div>
+
+          <button
+            class="icon-button"
+            id="refreshButton"
+            type="button"
+            title="Refresh weather"
+            aria-label="Refresh weather"
+          >
+            <i class="fa-solid fa-rotate"></i>
+          </button>
+
+          <button
+            class="icon-button"
+            id="themeButton"
+            type="button"
+            title="Toggle theme"
+            aria-label="Toggle theme"
+          >
+            <i class="fa-solid fa-moon"></i>
+          </button>
+
+          <button
+            class="mobile-menu-button"
+            id="mobileMenuButton"
+            type="button"
+            aria-label="Open navigation"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+
+          <div class="profile-pill">
+            <div class="profile-avatar">S</div>
+
+            <div class="profile-meta">
+              <strong>Explorer</strong>
+              <span>Pro workspace</span>
+            </div>
+          </div>
+
+        </div>
+      </header>
+
+      <!-- ================= SEARCH ================= -->
+      <section class="search-section">
+
+        <div class="search-layout">
+
+          <div class="search-wrap">
+
+            <form
+              class="search-box"
+              id="searchForm"
+            >
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+              <input
+                id="cityInput"
+                type="text"
+                autocomplete="off"
+                placeholder="Search city, state, country..."
+                aria-label="Search city"
+                required
+              />
+
+              <button
+                class="search-submit"
+                type="submit"
+              >
+                <span>Search</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </form>
+
+            <div
+              class="suggestions hidden"
+              id="suggestions"
+              role="listbox"
+            ></div>
+
+          </div>
+
+          <button
+            class="location-button"
+            id="locationButton"
+            type="button"
+          >
+            <i class="fa-solid fa-location-crosshairs"></i>
+            <span>Use my location</span>
+          </button>
+
+        </div>
+
+        <div class="quick-searches">
+          <span class="quick-label">Popular:</span>
+
+          <button
+            type="button"
+            class="quick-city"
+            data-city="Patna"
+          >
+            Patna
+          </button>
+
+          <button
+            type="button"
+            class="quick-city"
+            data-city="Delhi"
+          >
+            Delhi
+          </button>
+
+          <button
+            type="button"
+            class="quick-city"
+            data-city="Mumbai"
+          >
+            Mumbai
+          </button>
+
+          <button
+            type="button"
+            class="quick-city"
+            data-city="Bengaluru"
+          >
+            Bengaluru
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= ERROR ================= -->
+      <div
+        class="status-message error hidden"
+        id="errorMessage"
+        role="alert"
+      >
+        <div class="status-message-icon">
+          <i class="fa-solid fa-circle-exclamation"></i>
+        </div>
+
+        <div class="status-message-copy">
+          <strong>Something went wrong</strong>
+          <span id="errorText">
+            Unable to load weather data.
+          </span>
+        </div>
+
+        <button
+          type="button"
+          id="retryButton"
+        >
+          Retry
+        </button>
+      </div>
+
+      <!-- ================= DASHBOARD ================= -->
+      <section
+        id="dashboard"
+        class="section-anchor"
+      >
+
+        <!-- ================= HERO ================= -->
+        <div
+          class="hero-card"
+          id="heroCard"
+        >
+
+          <div class="hero-glow hero-glow-one"></div>
+          <div class="hero-glow hero-glow-two"></div>
+
+          <div class="hero-content">
+
+            <div class="hero-top">
+
+              <div>
+                <div class="hero-location">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <span id="locationName">
+                    Patna, India
+                  </span>
+                </div>
+
+                <div
+                  class="hero-date"
+                  id="currentDate"
+                >
+                  Loading date...
+                </div>
+              </div>
+
+              <div class="hero-condition-badge">
+                <span
+                  class="condition-icon"
+                  id="conditionIcon"
+                >
+                  ☀️
+                </span>
+
+                <span id="conditionText">
+                  Clear sky
+                </span>
+              </div>
+
+            </div>
+
+            <div class="hero-main">
+
+              <div class="temperature-wrap">
+
+                <div class="temperature-line">
+                  <span
+                    class="temperature-value"
+                    id="temperature"
+                  >
+                    --
+                  </span>
+
+                  <span
+                    class="temperature-unit"
+                    id="temperatureUnit"
+                  >
+                    °C
+                  </span>
+                </div>
+
+                <div class="feels-like">
+                  Feels like
+                  <strong id="feelsLike">--°C</strong>
+                </div>
+
+              </div>
+
+              <div class="hero-side-stat">
+
+                <div class="hero-side-icon">
+                  <i class="fa-solid fa-sun"></i>
+                </div>
+
+                <div>
+                  <span>Daylight</span>
+                  <strong id="daylightDuration">
+                    --
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="hero-footer">
+
+              <div class="hero-detail">
+                <div class="hero-detail-icon">
+                  <i class="fa-solid fa-arrow-up"></i>
+                </div>
+
+                <div>
+                  <span>High</span>
+                  <strong id="todayHigh">--°C</strong>
+                </div>
+              </div>
+
+              <div class="hero-detail">
+                <div class="hero-detail-icon">
+                  <i class="fa-solid fa-arrow-down"></i>
+                </div>
+
+                <div>
+                  <span>Low</span>
+                  <strong id="todayLow">--°C</strong>
+                </div>
+              </div>
+
+              <div class="hero-detail">
+                <div class="hero-detail-icon">
+                  <i class="fa-solid fa-sun"></i>
+                </div>
+
+                <div>
+                  <span>Sunrise</span>
+                  <strong id="sunrise">--:--</strong>
+                </div>
+              </div>
+
+              <div class="hero-detail">
+                <div class="hero-detail-icon">
+                  <i class="fa-solid fa-moon"></i>
+                </div>
+
+                <div>
+                  <span>Sunset</span>
+                  <strong id="sunset">--:--</strong>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="unit-toggle">
+              <button
+                type="button"
+                id="celsiusButton"
+                class="active"
+              >
+                °C
+              </button>
+
+              <button
+                type="button"
+                id="fahrenheitButton"
+              >
+                °F
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================= STATS ================= -->
+        <div class="stats-grid">
+
+          <article class="stat-card">
+            <div class="stat-icon stat-blue">
+              <i class="fa-solid fa-droplet"></i>
+            </div>
+
+            <div>
+              <span>Humidity</span>
+              <strong id="humidity">--%</strong>
+              <small>Relative humidity</small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon stat-purple">
+              <i class="fa-solid fa-wind"></i>
+            </div>
+
+            <div>
+              <span>Wind speed</span>
+              <strong id="windSpeed">-- km/h</strong>
+              <small>Current surface wind</small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon stat-orange">
+              <i class="fa-solid fa-cloud-rain"></i>
+            </div>
+
+            <div>
+              <span>Precipitation</span>
+              <strong id="precipitation">-- mm</strong>
+              <small>Current conditions</small>
+            </div>
+          </article>
+
+          <article class="stat-card">
+            <div class="stat-icon stat-green">
+              <i class="fa-solid fa-gauge-high"></i>
+            </div>
+
+            <div>
+              <span>Pressure</span>
+              <strong id="pressure">-- hPa</strong>
+              <small>Surface pressure</small>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- ================= DASHBOARD GRID ================= -->
+        <div class="dashboard-grid">
+
+          <!-- LEFT -->
+          <div class="content-column">
+
+            <!-- TEMPERATURE -->
+            <article class="panel-card">
+
+              <div class="panel-heading">
+                <div>
+                  <div class="panel-kicker">Live trend</div>
+
+                  <h2>Temperature trend</h2>
+
+                  <p>
+                    Next 24 hours from the live forecast API
+                  </p>
+                </div>
+
+                <button
+                  class="text-button"
+                  id="chartRefreshButton"
+                  type="button"
+                >
+                  <i class="fa-solid fa-rotate"></i>
+                  Update
+                </button>
+              </div>
+
+              <div class="chart-shell">
+                <canvas
+                  id="temperatureChart"
+                  aria-label="24 hour temperature chart"
+                ></canvas>
+              </div>
+
+            </article>
+
+            <!-- HOURLY -->
+            <article
+              class="panel-card section-anchor"
+              id="hourly"
+            >
+
+              <div class="panel-heading">
+
+                <div>
+                  <div class="panel-kicker">Timeline</div>
+
+                  <h2>Hourly forecast</h2>
+
+                  <p>
+                    What the next 12 hours look like
+                  </p>
+                </div>
+
+                <span class="mini-badge">
+                  <i class="fa-solid fa-clock"></i>
+                  12 hours
+                </span>
+
+              </div>
+
+              <div
+                class="hourly-list"
+                id="hourlyList"
+              ></div>
+
+            </article>
+
+            <!-- DAILY -->
+            <article
+              class="panel-card section-anchor"
+              id="forecast"
+            >
+
+              <div class="panel-heading">
+
+                <div>
+                  <div class="panel-kicker">Planning</div>
+
+                  <h2>7-day forecast</h2>
+
+                  <p>
+                    Daily highs, lows and precipitation probability
+                  </p>
+                </div>
+
+                <span class="mini-badge">
+                  <i class="fa-solid fa-calendar-week"></i>
+                  7 days
+                </span>
+
+              </div>
+
+              <div
+                class="forecast-list"
+                id="forecastList"
+              ></div>
+
+            </article>
+
+          </div>
+
+          <!-- RIGHT -->
+          <div class="content-column side-column">
+
+            <!-- AQI -->
+            <article
+              class="panel-card section-anchor"
+              id="airQuality"
+            >
+
+              <div class="panel-heading">
+
+                <div>
+                  <div class="panel-kicker">Environment</div>
+
+                  <h2>Air quality</h2>
+
+                  <p>
+                    Current air pollution indicators
+                  </p>
+                </div>
+
+                <span class="panel-icon">
+                  <i class="fa-solid fa-leaf"></i>
+                </span>
+
+              </div>
+
+              <div class="aqi-overview">
+
+                <div
+                  class="aqi-gauge"
+                  id="aqiGauge"
+                >
+                  <span id="aqiValue">--</span>
+                </div>
+
+                <div>
+                  <span class="meta-label">
+                    US Air Quality Index
+                  </span>
+
+                  <strong
+                    class="aqi-status"
+                    id="aqiStatus"
+                  >
+                    Loading
+                  </strong>
+
+                  <span
+                    class="aqi-note"
+                    id="aqiNote"
+                  >
+                    Awaiting live data
+                  </span>
+                </div>
+
+              </div>
+
+              <div class="pollutant-grid">
+
+                <div class="pollutant-item">
+                  <span>PM2.5</span>
+                  <strong id="pm25">
+                    -- μg/m³
+                  </strong>
+                </div>
+
+                <div class="pollutant-item">
+                  <span>PM10</span>
+                  <strong id="pm10">
+                    -- μg/m³
+                  </strong>
+                </div>
+
+                <div class="pollutant-item">
+                  <span>CO</span>
+                  <strong id="carbonMonoxide">
+                    -- μg/m³
+                  </strong>
+                </div>
+
+                <div class="pollutant-item">
+                  <span>Dust</span>
+                  <strong id="dust">
+                    -- μg/m³
+                  </strong>
+                </div>
+
+              </div>
+
+            </article>
+
+            <!-- SUN -->
+            <article class="panel-card">
+
+              <div class="panel-heading">
+
+                <div>
+                  <div class="panel-kicker">Daylight</div>
+
+                  <h2>Sun information</h2>
+
+                  <p>
+                    Today's solar schedule
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="sun-path">
+                <div class="sun-track"></div>
+                <div
+                  class="sun-progress"
+                  id="sunProgress"
+                ></div>
+
+                <div
+                  class="sun-orb"
+                  id="sunOrb"
+                ></div>
+              </div>
+
+              <div class="sun-times">
+
+                <div class="sun-time-item">
+                  <span class="sun-label">
+                    <i class="fa-solid fa-sun"></i>
+                    Sunrise
+                  </span>
+
+                  <strong id="sunriseSecondary">
+                    --:--
+                  </strong>
+                </div>
+
+                <div class="sun-time-item right">
+                  <span class="sun-label">
+                    <i class="fa-solid fa-moon"></i>
+                    Sunset
+                  </span>
+
+                  <strong id="sunsetSecondary">
+                    --:--
+                  </strong>
+                </div>
+
+              </div>
+
+            </article>
+
+            <!-- RECENT -->
+            <article
+              class="panel-card section-anchor"
+              id="recent"
+            >
+
+              <div class="panel-heading">
+
+                <div>
+                  <div class="panel-kicker">Memory</div>
+
+                  <h2>Recent searches</h2>
+
+                  <p>Your latest locations</p>
+                </div>
+
+                <button
+                  class="text-button"
+                  id="clearRecent"
+                  type="button"
+                >
+                  Clear
+                </button>
+
+              </div>
+
+              <div
+                class="recent-list"
+                id="recentList"
+              ></div>
+
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= API EXPLORER ================= -->
+      <section
+        class="api-section section-anchor"
+        id="apiExplorer"
+      >
+
+        <div class="api-section-header">
+
+          <div>
+            <div class="eyebrow">
+              Day 13 • APIs, JSON & Fetch
+            </div>
+
+            <h2>API Explorer</h2>
+
+            <p>
+              See the request, status and live JSON response behind this dashboard.
+            </p>
+          </div>
+
+          <div
+            class="api-live-status"
+            id="apiLiveStatus"
+          >
+            <span class="status-dot"></span>
+            <span>Waiting for request</span>
+          </div>
+
+        </div>
+
+        <!-- API METRICS -->
+        <div class="api-metrics">
+
+          <div class="api-metric">
+            <span>Provider</span>
+            <strong>Open-Meteo</strong>
+          </div>
+
+          <div class="api-metric">
+            <span>Method</span>
+            <strong id="apiMethod">GET</strong>
+          </div>
+
+          <div class="api-metric">
+            <span>Format</span>
+            <strong id="apiFormat">JSON</strong>
+          </div>
+
+          <div class="api-metric">
+            <span>Status</span>
+            <strong id="apiHttpStatus">--</strong>
+          </div>
+
+          <div class="api-metric">
+            <span>Response time</span>
+            <strong id="apiResponseTime">-- ms</strong>
+          </div>
+
+        </div>
+
+        <!-- REQUEST + JSON -->
+        <div class="api-grid">
+
+          <!-- REQUEST -->
+          <article class="api-card">
+
+            <div class="api-card-header">
+
+              <div>
+                <span class="api-card-kicker">
+                  Request
+                </span>
+
+                <h3>Endpoint details</h3>
+              </div>
+
+              <span
+                class="api-method-badge"
+                id="requestBadge"
+              >
+                GET
+              </span>
+
+            </div>
+
+            <div class="endpoint-box">
+
+              <span id="apiEndpointShort">
+                https://api.open-meteo.com/v1/forecast
+              </span>
+
+              <button
+                type="button"
+                id="copyEndpointButton"
+                class="copy-button"
+                title="Copy endpoint"
+                aria-label="Copy API endpoint"
+              >
+                <i class="fa-regular fa-copy"></i>
+              </button>
+
+            </div>
+
+            <div class="request-rows">
+
+              <div>
+                <span>Base API</span>
+                <strong id="apiBaseUrl">
+                  api.open-meteo.com
+                </strong>
+              </div>
+
+              <div>
+                <span>Coordinates</span>
+                <strong id="apiCoordinates">
+                  --
+                </strong>
+              </div>
+
+              <div>
+                <span>Timezone</span>
+                <strong id="apiTimezone">
+                  auto
+                </strong>
+              </div>
+
+              <div>
+                <span>Last call</span>
+                <strong id="apiLastCall">
+                  --
+                </strong>
+              </div>
+
+            </div>
+
+          </article>
+
+          <!-- JSON -->
+          <article class="api-card">
+
+            <div class="api-card-header">
+
+              <div>
+                <span class="api-card-kicker">
+                  Live response
+                </span>
+
+                <h3>JSON Preview</h3>
+              </div>
+
+              <button
+                type="button"
+                class="copy-button"
+                id="copyJsonButton"
+                title="Copy JSON"
+                aria-label="Copy JSON response"
+              >
+                <i class="fa-regular fa-copy"></i>
+              </button>
+
+            </div>
+
+            <div class="json-toolbar">
+
+              <button
+                type="button"
+                class="json-tab active"
+                data-json-mode="formatted"
+              >
+                Formatted
+              </button>
+
+              <button
+                type="button"
+                class="json-tab"
+                data-json-mode="compact"
+              >
+                Compact
+              </button>
+
+              <span
+                class="json-size"
+                id="jsonSize"
+              >
+                0 characters
+              </span>
+
+            </div>
+
+            <pre
+              class="json-viewer"
+              id="jsonOutput"
+            >Waiting for your first API response...</pre>
+
+          </article>
+
+        </div>
+
+        <!-- API FLOW -->
+        <div class="api-flow">
+
+          <div class="flow-step">
+            <span>01</span>
+            <strong>fetch()</strong>
+            <small>Send request</small>
+          </div>
+
+          <div class="flow-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+
+          <div class="flow-step">
+            <span>02</span>
+            <strong>response.json()</strong>
+            <small>Parse JSON</small>
+          </div>
+
+          <div class="flow-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+
+          <div class="flow-step">
+            <span>03</span>
+            <strong>render()</strong>
+            <small>Update DOM</small>
+          </div>
+
+          <div class="flow-arrow">
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+
+          <div class="flow-step">
+            <span>04</span>
+            <strong>UI update</strong>
+            <small>Show live data</small>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= FOOTER ================= -->
+      <footer class="footer">
+
+        <div>
+          <strong>Weatherly Pro</strong>
+          <span>
+            Built for the 15-Day Frontend Web Development Workshop
+          </span>
+        </div>
+
+        <div>
+          Weather data by Open-Meteo · Last updated
+          <span id="lastUpdated">--</span>
+        </div>
+
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ================= LOADING ================= -->
+  <div
+    class="loading-overlay hidden"
+    id="loadingOverlay"
+    aria-live="polite"
+  >
+    <div class="loading-card">
+
+      <div class="loading-spinner"></div>
+
+      <div>
+        <strong>Fetching live data</strong>
+
+        <span id="loadingText">
+          Connecting to weather services...
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= TOAST ================= -->
+  <div
+    class="toast"
+    id="toast"
+    role="status"
+  ></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
